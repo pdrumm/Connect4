@@ -1,0 +1,23 @@
+Patrick Drumm
+Lab 1, cse20212
+
+
+User's Perspective:
+	From the user's perspective, this is a fun game to play! This connect 4 program executes two different modes: 1-player and 2-player. If the user chooses 1-player, they will play against a not-so-intelligent computer, who places their discs into columns at random.
+	In 2-player mode, two human users can face-off. They will both enter their names, and play as X's vs. O's. The program will allow them to alternate turns, and restricts them from playing in any out of bounds or any full columns. If at any point a player gets four discs in a row, the program will declare that user to be the winner, and then exit out of the program.
+
+
+Programmer's Perspective:
+	From the programmer's perpective, this program is a good introduction to classes. The program uses two header files which compose of one class each. There is a column class and a board class. The column class keeps track of the discs in that specific column and which player those discs belong to. The board class is composed of an array of seven columns, and displays them for the user(s) to play on.
+	In this program, I used get functions to grab the private data of the columns. This was advantageous because it created a simple way for me to use the private members of the columns at any given time, all while preventing the user from having direct access to that data.
+	Whether the user selects 1-player or 2-player, the program runs nearly identically. Once the user selects the mode, the variables are declared and users will enter their names. In addition, basic rules are outlined. Once the game begins, the program enters a while loop that will continue until either the user enters -1 to quit or one of the players gets 4 in a row. The program keeps track of how many turns have passed and utilizes the mod operator to determine which player's turn it is. They are prompted until they provide a valid column to play in. If the user enters -1, the program then displays a message and exits.
+	Otherwise, the program adds the new disc to the board, and determines whether or not the player just won by calling the function isWin().
+	The algorithm I implemented in isWin utilizes some basic knowledge about connect 4. First, if we check for a winner every turn, then we know that the most recent piece played must be one of the four pieces in a row. That piece has at most 8 neighboring cells. However there are a maximum of 7 possible surrounding discs, because there cannot be a disc directly above the most recently played disc. 
+	The program creates an array with four integers. Each integer represents a count of how many discs are in a row in the four possible directions. The program checks its 7 neighbors in the following order: 1)north-west, 2)west, 3)south-west, 4)south, 5)south-east, 6)east, 7)north-east. And then the program accounts for the fact that 1-and-5, 2-and-6, 3-and-7 create the same diagonal, giving us our four directions.
+	The algorithm then returns if there were at least 4 discs in a row in any given direction. The game will either declare a winner, or it will continue to play and allow the other player to make their next move.
+	As far as the implementation of the extra-credit(1-player mode), it was fairly simple to set up. I simply reused most of my 2-player function, but then named player2 "Computer". Instead of waiting for input when it was the computer's turn, I used rand()%7 to force it to pick some random number that corresponded to one of the 7 columns.
+	Additionally, this program uses dynamic memory allocation to create the player discs and columns. Consequentally, this program also uses deconstructors. Deconstructors are needed with dynamic memory management in order to be efficient with memory. Once an item goes out of scope, it can no longer be used. Therefore, rather than let it take up pointless memory, we can use deconstructors to delete the items once they are out of scope and can no longer be used.
+
+
+Evaluation for Correctness:
+	In order to test this program for correctness, I essentially played a lot of games! I made sure that both players could win in both 2-player and 1-player mode. In winning, I made sure that the program detected wins from any given direction(diagonal, sideways, vertical, etc). I also tested the correctness by trying to play pieces out of bounds of the board, as well as in full columns. 
