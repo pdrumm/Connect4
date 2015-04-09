@@ -9,16 +9,16 @@
 class C4Col {
 	public:
 		C4Col();		// constructor
-		~C4Col();		// deconstructor
 		int isFull();		// determines if the column is full
 		char getDisc(int discX);	// returns the requested element of the private character array
 		int getMaxDiscs();	// returns the maximum number of discs
 		void addDisc(char newDisc);	// adds the character representing a disc to the next open slot in the Disc array
 		int getNumDisc();	// returns the number of discs in the column
+		C4Col operator+=(char addedDisc);
 	private:
 		int numDisc;
 		int maxDisc;
-		char *playerDiscs;
+		char playerDiscs[6];
 };
 
 #endif

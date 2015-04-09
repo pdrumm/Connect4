@@ -14,12 +14,7 @@ using namespace std;
 C4Col::C4Col() {
 	numDisc = 0;	// sets initial number of discs in column to zero
 	maxDisc = 6;	// every column has a max of 6 discs
-	playerDiscs = new char[6];	// stores value of six disc locations
 	for(int i=0; i<maxDisc; i++) playerDiscs[i] = ' ';	// set initial disc value of all discs in column to empty
-}
-
-C4Col::~C4Col() {
-	delete [] playerDiscs;
 }
 
 int C4Col::isFull() {
@@ -47,24 +42,25 @@ int C4Col::getNumDisc() {
 	return(numDisc);	// return the number of discs in the column
 }
 
+C4Col C4Col::operator+=(char addedDisc) {
+	addDisc(addedDisc);
+	return(*this);	// points to particular instance of C4Col
+}
+
+ostream &operator<<(ostream &output, C4Board &c4) {
+	for(int i=c4.board[0].getMaxDiscs() - 1; i>=0; i--){	// subtract 1 from maxDisc to match array indexing. Print last element of each column first, through to the first element of each column which will be last
+		output << "| ";					// displays leftmost column barrier
+		for(int j=0; j<c4.numCol; j++){
+			output << c4.board[j].getDisc(i) << " | ";	// displays every disc and the barrier on the right of each given disc
+		}
+		output << endl;
+	}
+	output << "  1   2   3   4   5   6   7" << endl;		// numbered columns for user guidance
+	return output;
+}
+
 C4Board::C4Board() {
 	numCol = 7;			// set number of columns in board to be 7
-	board = new C4Col[numCol];	// create 7 columns to compose board(dynamic memory allocation)
-}
-
-C4Board::~C4Board() {
-	delete [] board;
-}
-
-void C4Board::display() {
-	for(int i=board[0].getMaxDiscs() - 1; i>=0; i--){	// subtract 1 from maxDisc to match array indexing. Print last element of each column first, through to the first element of each column which will be last
-		cout << "| ";					// displays leftmost column barrier
-		for(int j=0; j<numCol; j++){
-			cout << board[j].getDisc(i) << " | ";	// displays every disc and the barrier on the right of each given disc
-		}
-		cout << endl;
-	}
-	cout << "  1   2   3   4   5   6   7" << endl;		// numbered columns for user guidance
 }
 
 void C4Board::play() {
@@ -81,7 +77,7 @@ void C4Board::play() {
 	cout << "Here are your game piece assignments..." << endl << endl << player1 << ": X" << endl << player2 << ": O" << endl << endl;
 	// game instructions printed
 	cout << "To play your piece when it is your turn, simply enter the column number desired when prompted.\nPlease note: you may exit at any time by entering the value: -1\n\nLet's begin!" << endl << endl;	
-	display();	// print empty board
+	cout << *this;	// print empty board
 
 	while(userCol != -1){
 		userTurn++;		// increment total turns each time a disc is played
@@ -120,16 +116,16 @@ void C4Board::play() {
 		// If the user played in a valid column, add the disc to the board and check to see if they won
 		}else{
 			if(userTurn%2 == 1) {
-				board[userCol].addDisc('X');
+				board[userCol]+='X';
 				isWin=didWin('X',userCol);
 			}else{
-				board[userCol].addDisc('O');
+				board[userCol]+='O';
 				isWin=didWin('O',userCol);
 			}
 			system("clear");	// clear the screen for clean display
 			cout << player1 << ": X\n" << player2 << ": O\n\n";	// display user discs as a reminder
 		}
-		display();	// display the board
+		cout << *this;	// display the board
 		// If the user wins, end the game(ie. exit the whil loop) and display a message declaring them as the winner!
 		if(isWin){
 			userCol=-1;
@@ -220,7 +216,7 @@ void C4Board::comp() {
 	cout << "Here are your game piece assignments..." << endl << endl << player1 << ": X" << endl << player2 << ": O" << endl << endl;
 	// game instructions printed
 	cout << "To play your piece when it is your turn, simply enter the column number desired when prompted.\nPlease note: you may exit at any time by entering the value: -1\n\nLet's begin!" << endl << endl;	
-	display();	// print empty board
+	cout << *this;	// print empty board
 
 	while(userCol != -1){
 		userTurn++;		// increment total turns each time a disc is played
@@ -249,16 +245,16 @@ void C4Board::comp() {
 		// If the user played in a valid column, add the disc to the board and check to see if they won
 		}else{
 			if(userTurn%2 == 1) {
-				board[userCol].addDisc('X');
+				board[userCol]+='X';
 				isWin=didWin('X',userCol);
 			}else{
-				board[userCol].addDisc('O');
+				board[userCol]+='O';
 				isWin=didWin('O',userCol);
 			}
 			system("clear");	// clear the screen for clean display
 			cout << player1 << ": X\n" << player2 << ": O\n\n";	// display user discs as a reminder
 		}
-		display();	// display the board
+		cout << *this;	// display the board
 		// If the user wins, end the game(ie. exit the whil loop) and display a message declaring them as the winner!
 		if(isWin){
 			userCol=-1;

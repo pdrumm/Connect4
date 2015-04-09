@@ -8,17 +8,20 @@
 #ifndef C4BOARD_h
 #define C4BOARD_h
 #include "C4Col.h"
+#include <iostream>
+using namespace std;
 
 class C4Board {
+	friend ostream &operator<<(ostream &, C4Board &);
+
 	public:
 		C4Board();	// constructor
-		~C4Board();	// deconstructor
 		void display();	// displays the current board in simple text
 		void play();	// allows two players to play the game
 		void comp();	// one player mode vs. computer
 	private:
 		int numCol;	// number of columns
-		C4Col *board;
+		C4Col board[7];
 		int didWin(char,int);
 };
 
